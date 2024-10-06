@@ -26,6 +26,12 @@ if option:
     # gráfico de la serie
     with st.container():
         fig = px.line(df, title=f"Serie Diaria de {option}")
+        fig.update_layout(legend=dict(
+            yanchor="top",
+            y=0.99,
+            xanchor="left",
+            x=0.01
+        ))
         st.plotly_chart(fig)
         
     with st.container():
@@ -66,6 +72,12 @@ if option:
             if acf_difs > 0:
                 df_dif = df[option].diff(acf_difs).dropna()
                 plot = px.line(df_dif, title=f"{option} con {acf_difs} diferencias")
+                plot.update_layout(legend=dict(
+                    yanchor="top",
+                    y=0.99,
+                    xanchor="left",
+                    x=0.01
+                ))
                 st.plotly_chart(plot)
         with columns3[1]:
             if acf_difs > 0:
@@ -84,6 +96,12 @@ if option:
             if pacf_difs > 0:
                 df_dif = df[option].diff(pacf_difs).dropna()
                 plot = px.line(df_dif, title=f"{option} con {pacf_difs} diferencias")
+                plot.update_layout(legend=dict(
+                    yanchor="top",
+                    y=0.99,
+                    xanchor="left",
+                    x=0.01
+                ))
                 st.plotly_chart(plot)
         with columns3[1]:
             if pacf_difs > 0:
@@ -114,6 +132,12 @@ if option:
             if acov_difs > 0:
                 df_dif = df[option].diff(acov_difs).dropna()
                 plot = px.line(df_dif, title=f"{option} con {acov_difs} diferencias")
+                plot.update_layout(legend=dict(
+                    yanchor="top",
+                    y=0.99,
+                    xanchor="left",
+                    x=0.01
+                ))
                 st.plotly_chart(plot)
             else:
                 df_dif = df[option]
