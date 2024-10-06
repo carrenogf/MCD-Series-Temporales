@@ -89,8 +89,8 @@ if option:
                 
     with st.container():
         st.subheader("Autocorrelación Parcial (PACF)")
-        columns3 = st.columns(2)
-        with columns3[0]:
+        columns4 = st.columns(2)
+        with columns4[0]:
             pacf_lags = st.number_input("pacf_Lags", min_value=1, max_value=100, value=30)
             pacf_difs = st.number_input("pacf_Diferencias", min_value=0, max_value=10, value=0)
             if pacf_difs > 0:
@@ -103,7 +103,7 @@ if option:
                     x=0.01
                 ))
                 st.plotly_chart(plot2)
-        with columns3[1]:
+        with columns4[1]:
             if pacf_difs > 0:
                 pacf = plot_pacf(df_dif,lags=pacf_lags, title=f"PACF de {option} con {pacf_difs} diferencias")
                 st.pyplot(pacf)
@@ -121,10 +121,10 @@ if option:
     # Autocovarianza
     with st.container():
         st.subheader("Autocovarianza")
-        columns4 = st.columns(2)
+        columns5 = st.columns(2)
 
         # Configurar el número de desfases (lags) y diferencias
-        with columns4[0]:
+        with columns5[0]:
             acov_lags = st.number_input("acov lags", min_value=1, max_value=100, value=30)
             acov_difs = st.number_input("acov diferencias", min_value=0, max_value=10, value=0)
             
@@ -143,7 +143,7 @@ if option:
                 df_dif = df[option]
         
         # Mostrar el gráfico de autocovarianza
-        with columns4[1]:
+        with columns5[1]:
             # Calcular la autocovarianza para cada lag
             autocov = [autocovarianza(df_dif, lag) for lag in range(1, acov_lags+1)]
             
