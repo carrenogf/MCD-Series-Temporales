@@ -5,13 +5,14 @@ from statsmodels.tsa.seasonal import seasonal_decompose
 import matplotlib.pyplot as plt
 from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 from statsmodels.tsa.stattools import acf, pacf
-
+import os
 
 
 st.set_page_config(layout="wide")
 
 # Load data
-df = pd.read_excel("dataset/series_diarias.xlsx")
+cwd = os.getcwd()
+df = pd.read_excel(os.path.join(cwd,"dataset","series_diarias.xlsx"))
 df.set_index("FECHA", inplace=True)
 series = df.columns
 
