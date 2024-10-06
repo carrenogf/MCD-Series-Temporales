@@ -131,7 +131,7 @@ if option:
             # Aplicar las diferencias si es necesario
             if acov_difs > 0:
                 df_dif = df[option].diff(acov_difs).dropna()
-                plot = px.line(df_dif, title=f"{option} con {acov_difs} diferencias")
+                plot = px.line(df_dif, title=f" {option} con {acov_difs} diferencias")
                 plot.update_layout(legend=dict(
                     yanchor="top",
                     y=0.99,
