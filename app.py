@@ -15,7 +15,7 @@ series = df.columns
 
 # filtrar serie y eliminar NAs
 option = st.selectbox(
-    "How would you like to be contacted?",
+    "Elegir Serie",
     series
 )
 if option:
