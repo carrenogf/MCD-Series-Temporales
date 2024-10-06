@@ -71,14 +71,14 @@ if option:
             acf_difs = st.number_input("acf_Diferencias", min_value=0, max_value=10, value=0)
             if acf_difs > 0:
                 df_dif = df[option].diff(acf_difs).dropna()
-                plot = px.line(df_dif, title=f"{option} con {acf_difs} diferencias")
-                plot.update_layout(legend=dict(
+                plot1 = px.line(df_dif, title=f"{option} con {acf_difs} diferencias")
+                plot1.update_layout(legend=dict(
                     yanchor="top",
                     y=0.99,
                     xanchor="left",
                     x=0.01
                 ))
-                st.plotly_chart(plot)
+                st.plotly_chart(plot1)
         with columns3[1]:
             if acf_difs > 0:
                 acf = plot_acf(df_dif,lags=acf_lags, title=f"ACF de {option} con {acf_difs} diferencias")
@@ -95,14 +95,14 @@ if option:
             pacf_difs = st.number_input("pacf_Diferencias", min_value=0, max_value=10, value=0)
             if pacf_difs > 0:
                 df_dif = df[option].diff(pacf_difs).dropna()
-                plot = px.line(df_dif, title=f"{option} con {pacf_difs} diferencias")
-                plot.update_layout(legend=dict(
+                plot2 = px.line(df_dif, title=f"{option} con {pacf_difs} diferencias")
+                plot2.update_layout(legend=dict(
                     yanchor="top",
                     y=0.99,
                     xanchor="left",
                     x=0.01
                 ))
-                st.plotly_chart(plot)
+                st.plotly_chart(plot2)
         with columns3[1]:
             if pacf_difs > 0:
                 pacf = plot_pacf(df_dif,lags=pacf_lags, title=f"PACF de {option} con {pacf_difs} diferencias")
