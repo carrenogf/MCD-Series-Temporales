@@ -95,7 +95,7 @@ if option:
             pacf_difs = st.number_input("pacf_Diferencias", min_value=0, max_value=10, value=0)
             if pacf_difs > 0:
                 df_dif = df[option].diff(pacf_difs).dropna()
-                plot2 = px.line(df_dif, title=f"{option} con {pacf_difs} diferencias")
+                plot2 = px.line(df_dif, title=f"{option} con  {pacf_difs} diferencias")
                 plot2.update_layout(legend=dict(
                     yanchor="top",
                     y=0.99,
