@@ -125,8 +125,8 @@ if option:
 
         # Configurar el número de desfases (lags) y diferencias
         with columns4[0]:
-            acov_lags = st.number_input("Número de lags", min_value=1, max_value=100, value=30)
-            acov_difs = st.number_input("Número de diferencias", min_value=0, max_value=10, value=0)
+            acov_lags = st.number_input("acov lags", min_value=1, max_value=100, value=30)
+            acov_difs = st.number_input("acov diferencias", min_value=0, max_value=10, value=0)
             
             # Aplicar las diferencias si es necesario
             if acov_difs > 0:
