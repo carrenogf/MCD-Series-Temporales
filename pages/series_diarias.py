@@ -5,6 +5,9 @@ from statsmodels.tsa.seasonal import seasonal_decompose
 import matplotlib.pyplot as plt
 from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 from statsmodels.tsa.stattools import acf, pacf
+import statsmodels.tsa.stattools as tsa
+from pmdarima.arima.utils import ndiffs
+from pmdarima.arima import ADFTest
 import numpy as np
 
 
@@ -214,3 +217,100 @@ if option:
             plt.xlabel("Lags")
             plt.ylabel("Autocovarianza")
             st.pyplot(plt)
+            
+    with st.container():
+        
+        def print_test_afd(y):
+            st.write("Augmented Dickey-Fuller unit root test.")
+            resultado = tsa.adfuller(y)
+            st.write(f"""Estadistico ADF: {resultado[0]}\n
+            p-valor: {resultado[1]}\n
+            valores criticos: {resultado[4]}
+            """)
+
+
+        def dickey_fuller_tests(train):
+            # Test sin término independiente ni lineal ("None")
+            result_none = tsa.adfuller(train, maxlag=None, regression='n', autolag='AIC', store=False, regresults=False)
+            
+            # Test con término independiente pero sin término lineal ("Drift")
+            result_drift = tsa.adfuller(train, maxlag=None, regression='c', autolag='AIC', store=False, regresults=False)
+            
+            # Test con ambos términos ("Trend")
+            result_trend = tsa.adfuller(train, maxlag=None, regression='ct', autolag='AIC', store=False, regresults=False)
+            
+            # Mostrar resultados en Streamlit
+            st.write("## Test de Raíces Unitarias - Dickey Fuller")
+            
+            # Sin término independiente ni lineal
+            st.write("### Sin término independiente ni lineal ('None')")
+            st.write(f"ADF Statistic: {result_none[0]}")
+            st.write(f"p-value: {result_none[1]}")
+            st.write(f"Lags used: {result_none[2]}")
+            st.write(f"Number of observations: {result_none[3]}")
+            st.write(f"Critical Values: {result_none[4]}")
+            
+            # Con término independiente pero sin término lineal ("Drift")
+            st.write("### Con término independiente pero sin término lineal ('Drift')")
+            st.write(f"ADF Statistic: {result_drift[0]}")
+            st.write(f"p-value: {result_drift[1]}")
+            st.write(f"Lags used: {result_drift[2]}")
+            st.write(f"Number of observations: {result_drift[3]}")
+            st.write(f"Critical Values: {result_drift[4]}")
+            
+            # Con ambos términos ("Trend")
+            st.write("### Con ambos términos ('Trend')")
+            st.write(f"ADF Statistic: {result_trend[0]}")
+            st.write(f"p-value: {result_trend[1]}")
+            st.write(f"Lags used: {result_trend[2]}")
+            st.write(f"Number of observations: {result_trend[3]}")
+            st.write(f"Critical Values: {result_trend[4]}")
+
+        def test_stationarity(timeseries):
+            # Rolling statistics
+            rolmean = timeseries.rolling(12).mean()
+            rolstd = timeseries.rolling(12).std()
+
+            # Plot rolling statistics:
+            fig, ax = plt.subplots(figsize=(12, 6))
+            ax.plot(timeseries, color='blue', label='Original')
+            ax.plot(rolmean, color='red', label='Rolling Mean')
+            ax.plot(rolstd, color='black', label='Rolling Std')
+            ax.legend(loc='best')
+            ax.set_title('Rolling Mean & Standard Deviation')
+
+            # Mostrar gráfico en Streamlit
+            st.pyplot(fig)
+            
+
+        def estacionario(y):
+            # Estimado de número de diferencias con ADF test: Dickey-Fuller
+            n_adf = ndiffs(y, test='adf')
+
+            # KPSS test (auto_arima default): Kwiatkowski-Phillips-Schmidt-Shin
+            n_kpss = ndiffs(y, test='kpss')
+
+            # PP test: Phillips-Perron
+            n_pp = ndiffs(y, test='pp')
+
+            # Mostrar resultados en Streamlit
+            st.write('### Estimado de número de diferencias:')
+            st.write(f"- ADF test: {n_adf}")
+            st.write(f"- KPSS test: {n_kpss}")
+            st.write(f"- PP test: {n_pp}")
+
+            # Se debe realizar diferenciación con ADF Test
+            adftest = ADFTest(alpha=0.05)
+            should_diff, p_value = adftest.should_diff(y)
+            
+            st.write('### ¿Se debe realizar diferenciación según ADF Test?')
+            st.write(f"- Should Diff: {should_diff}")
+            st.write(f"- P-value: {p_value}")
+            
+            
+        with st.expander("Test estadísticos"):
+            print_test_afd(df[option])
+            dickey_fuller_tests(df[option])
+            test_stationarity(df[option])
+            estacionario(df[option])
+        
