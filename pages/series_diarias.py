@@ -131,7 +131,7 @@ if option:
         columns3 = st.columns(2)
         with columns3[0]:
             acf_lags = st.number_input("acf_Lags", min_value=1, max_value=100, value=30)
-            acf_difs = st.number_input("acf_Diferencias", min_value=0, max_value=10, value=0)
+            acf_difs = st.number_input("acf_Diferencias", min_value=0, max_value=100, value=0)
             if acf_difs > 0:
                 df_dif = df[option].diff(acf_difs).dropna()
                 plot1 = px.line(df_dif, title=f"{option} con {acf_difs} diferencias")
@@ -155,7 +155,7 @@ if option:
         columns4 = st.columns(2)
         with columns4[0]:
             pacf_lags = st.number_input("pacf_Lags", min_value=1, max_value=100, value=30)
-            pacf_difs = st.number_input("pacf_Diferencias", min_value=0, max_value=10, value=0)
+            pacf_difs = st.number_input("pacf_Diferencias", min_value=0, max_value=100, value=0)
             if pacf_difs > 0:
                 df_dif = df[option].diff(pacf_difs).dropna()
                 plot2 = px.line(df_dif, title=f"{option} con  {pacf_difs} diferencias")
@@ -189,7 +189,7 @@ if option:
         # Configurar el número de desfases (lags) y diferencias
         with columns5[0]:
             acov_lags = st.number_input("acov lags", min_value=1, max_value=100, value=30)
-            acov_difs = st.number_input("acov diferencias", min_value=0, max_value=10, value=0)
+            acov_difs = st.number_input("acov diferencias", min_value=0, max_value=100, value=0)
             
             # Aplicar las diferencias si es necesario
             if acov_difs > 0:
