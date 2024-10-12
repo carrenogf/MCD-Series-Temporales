@@ -8,6 +8,6 @@ st.markdown("##### Maestría en Explotación de Datos y Gestión del Conocimient
 st.markdown("##### Cohorte 2023")
 st.markdown("#### Alumnos:")
 st.markdown("* Carreño Giscagré Francisco Salvador")
-st.markdown("* Cuello Juan")
+st.markdown("* Cablinski Pablo")
 st.markdown("* Griffiths Waldo")
 st.markdown("* Parra Iván Javier")
