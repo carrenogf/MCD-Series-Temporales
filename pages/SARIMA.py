@@ -3,14 +3,14 @@ import pandas as pd
 import plotly.express as px
 import numpy as np
 import matplotlib.pyplot as plt
-from statsmodels.tsa.arima.model import ARIMA
+from statsmodels.tsa.statespace.sarimax import SARIMAX
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 import math
 
 st.set_page_config(layout="wide")
-st.title("Análisis de Series Temporales con ARIMA")  
-    
-# Load data
+st.title("Análisis de Series Temporales con SARIMA")
+
+# Cargar datos
 df = pd.read_excel("dataset/series_diarias.xlsx")
 df = df.sort_values("FECHA", ascending=True)
 df.set_index("FECHA", inplace=True)
@@ -23,12 +23,12 @@ with columns0[0]:
     option = st.selectbox("Elegir Serie", series)
 
 if option:
-    with columns0[1]:  # Ajuste logarítmico
+    with columns0[1]:
         ajuste1 = st.radio("Ajuste 1", ["Ninguno", "Logarítmico"])
         if ajuste1 == "Logarítmico":
             df[option] = np.log(df[option])
-        
-    with columns0[2]:  # Ajuste por inflación con UVA o tipo de cambio
+
+    with columns0[2]:
         ajuste2 = st.radio("Ajuste 2", ["Ninguno", "VALOR_UVA", "TC_MINORISTA"])
         if ajuste2 == "VALOR_UVA":
             df = df.dropna(subset=["VALOR_UVA"])
@@ -37,8 +37,8 @@ if option:
         elif ajuste2 == "TC_MINORISTA":
             df = df.dropna(subset=["TC_MINORISTA"])
             df["original"] = df[option]
-            df[option] = df[option] / df["TC_MINORISTA"] * df["TC_MINORISTA"].iloc[-1]          
-        
+            df[option] = df[option] / df["TC_MINORISTA"] * df["TC_MINORISTA"].iloc[-1]
+
     with columns0[3]:
         ajuste3 = st.radio("Ajuste 2", ["Ninguno", "boxcox"])
         if ajuste3 == "boxcox":
@@ -46,25 +46,25 @@ if option:
             df = df.dropna(subset=[option])
             df[option] = boxcox(df[option])[0]
 
-    df = df[option]  # Filtrar la serie seleccionada
-    df = df.dropna()  # Eliminar los NAs
+    df = df[option]
+    df = df.dropna()
 
     # Gráfico de la serie
     with st.container():
         fig = px.line(df, title=f"Serie Diaria de {option}")
-        fig.update_layout(legend=dict(
-            yanchor="top",
-            y=0.99,
-            xanchor="left",
-            x=0.01
-        ))
+        fig.update_layout(legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01))
         st.plotly_chart(fig)
 
-    # Formulario para ajustar el modelo ARIMA
-    st.subheader("Parámetros del modelo ARIMA")
+    # Formulario para ajustar el modelo SARIMA
+    st.subheader("Parámetros del modelo SARIMA")
     p = st.number_input("Parámetro p (AR)", min_value=0, max_value=10, value=1, step=1)
-    d = st.number_input("Parámetro d (Diferenciación)", min_value=0, max_value=2, value=1, step=1)
-    q = st.number_input("Parámetro q (MA)", min_value=0, max_value=10, value=1, step=1)
+    d = st.number_input("Parámetro d (Diferenciación)", min_value=0, max_value=2, value=0, step=1)
+    q = st.number_input("Parámetro q (MA)", min_value=0, max_value=10, value=0, step=1)
+
+    P = st.number_input("Parámetro P (AR estacional)", min_value=0, max_value=10, value=1, step=1)
+    D = st.number_input("Parámetro D (Diferenciación estacional)", min_value=0, max_value=2, value=0, step=1)
+    Q = st.number_input("Parámetro Q (MA estacional)", min_value=0, max_value=10, value=0, step=1)
+    s = st.number_input("Periodicidad estacional (s)", min_value=0, max_value=365, value=0, step=1)
 
     # Selección del porcentaje para el train/test split
     st.subheader("División en Train/Test")
@@ -75,14 +75,14 @@ if option:
     train_data = df[:int(len(df) * train_size)]
     test_data = df[int(len(df) * train_size):]
 
-    # Ajuste del modelo ARIMA
-    if st.button("Ajustar Modelo ARIMA"):
+    # Ajuste del modelo SARIMA
+    if st.button("Ajustar Modelo SARIMA"):
         try:
             # Ajustar el modelo en los datos de entrenamiento
-            model = ARIMA(train_data, order=(p, d, q))
-            model_fit = model.fit()
+            model = SARIMAX(train_data, order=(p, d, q), seasonal_order=(P, D, Q, s))
+            model_fit = model.fit(disp=False)
             st.success("Modelo ajustado con éxito.")
-            
+
             # Predicciones sobre el conjunto de prueba
             forecast_result = model_fit.get_forecast(steps=len(test_data))
             forecast = forecast_result.predicted_mean
@@ -113,4 +113,4 @@ if option:
             st.pyplot(fig)
 
         except Exception as e:
-            st.error(f"Error al ajustar el modelo ARIMA: {e}")
+            st.error(f"Error al ajustar el modelo SARIMA: {e}")
