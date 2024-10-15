@@ -20,6 +20,18 @@ columnas = list(df.columns)
 series = [serie for serie in columnas if serie not in ["VALOR_UVA", "TC_MINORISTA"]]
 columns0 = st.columns(4)
 
+# Selección de rango de fechas
+st.sidebar.subheader("Filtrar por Fechas")
+fecha_min = df.index.min().date()
+fecha_max = df.index.max().date()
+
+fecha_desde = st.sidebar.date_input("Fecha Desde", value=fecha_min, min_value=fecha_min, max_value=fecha_max)
+fecha_hasta = st.sidebar.date_input("Fecha Hasta", value=fecha_max, min_value=fecha_min, max_value=fecha_max)
+
+# Aplicar el filtro de fechas
+df_filtrado = df.loc[fecha_desde:fecha_hasta]
+st.sidebar.write(f"**Registros seleccionados:** {len(df_filtrado)}")
+
 # Filtrar serie y eliminar NAs
 with columns0[0]:
     option = st.selectbox("Elegir Serie", series)
@@ -28,24 +40,24 @@ if option:
     with columns0[1]:
         ajuste1 = st.radio("Ajuste 1", ["Ninguno", "Logarítmico"])
         if ajuste1 == "Logarítmico":
-            df[option] = np.log(df[option])
+            df_filtrado[option] = np.log(df_filtrado[option])
 
     with columns0[2]:
         ajuste2 = st.radio("Ajuste 2", ["Ninguno", "VALOR_UVA", "TC_MINORISTA"])
         if ajuste2 == "VALOR_UVA":
-            df = df.dropna(subset=["VALOR_UVA"])
-            df["original"] = df[option]
-            df[option] = df[option] / df["VALOR_UVA"] * df["VALOR_UVA"].iloc[-1]
+            df_filtrado = df_filtrado.dropna(subset=["VALOR_UVA"])
+            df_filtrado["original"] = df_filtrado[option]
+            df_filtrado[option] = df_filtrado[option] / df_filtrado["VALOR_UVA"] * df_filtrado["VALOR_UVA"].iloc[-1]
         elif ajuste2 == "TC_MINORISTA":
-            df = df.dropna(subset=["TC_MINORISTA"])
-            df["original"] = df[option]
-            df[option] = df[option] / df["TC_MINORISTA"] * df["TC_MINORISTA"].iloc[-1]
+            df_filtrado = df_filtrado.dropna(subset=["TC_MINORISTA"])
+            df_filtrado["original"] = df_filtrado[option]
+            df_filtrado[option] = df_filtrado[option] / df_filtrado["TC_MINORISTA"] * df_filtrado["TC_MINORISTA"].iloc[-1]
 
-    df = df[option].dropna()
+    df_filtrado = df_filtrado[option].dropna()
 
     # Gráfico de la serie
     with st.container():
-        fig = px.line(df, title=f"Serie Diaria de {option}")
+        fig = px.line(df_filtrado, title=f"Serie Diaria de {option}")
         fig.update_layout(legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01))
         st.plotly_chart(fig)
 
@@ -58,8 +70,8 @@ if option:
     m = st.number_input("Estacionalidad (m)", min_value=1, max_value=365, value=7, step=1)
 
     # División de los datos en conjuntos de entrenamiento y prueba
-    train_data = df[:int(len(df) * train_size)]
-    test_data = df[int(len(df) * train_size):]
+    train_data = df_filtrado[:int(len(df_filtrado) * train_size)]
+    test_data = df_filtrado[int(len(df_filtrado) * train_size):]
 
     # Ajuste del modelo auto_arima
     if st.button("Ajustar Modelo auto_arima"):
