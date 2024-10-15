@@ -64,7 +64,7 @@ if option:
     P = st.number_input("Parámetro P (AR estacional)", min_value=0, max_value=10, value=1, step=1)
     D = st.number_input("Parámetro D (Diferenciación estacional)", min_value=0, max_value=2, value=0, step=1)
     Q = st.number_input("Parámetro Q (MA estacional)", min_value=0, max_value=10, value=0, step=1)
-    s = st.number_input("Periodicidad estacional (s)", min_value=1, max_value=365, value=0, step=1)
+    s = st.number_input("Periodicidad estacional (s)", min_value=0, max_value=365, value=0, step=1)
 
     # Selección del porcentaje para el train/test split
     st.subheader("División en Train/Test")
