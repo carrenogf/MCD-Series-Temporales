@@ -18,6 +18,16 @@ columnas = list(df.columns)
 series = [serie for serie in columnas if serie not in ["VALOR_UVA", "TC_MINORISTA"]]
 columns0 = st.columns(5)
 
+# Selección de rango de fechas
+st.sidebar.subheader("Filtrar por Fechas")
+fecha_min = df.index.min().date()
+fecha_max = df.index.max().date()
+
+fecha_desde = st.sidebar.date_input("Fecha Desde", value=fecha_min, min_value=fecha_min, max_value=fecha_max)
+fecha_hasta = st.sidebar.date_input("Fecha Hasta", value=fecha_max, min_value=fecha_min, max_value=fecha_max)
+
+# Aplicar el filtro de fechas
+df = df.loc[fecha_desde:fecha_hasta]
 # Filtrar serie y eliminar NAs
 with columns0[0]:
     option = st.selectbox("Elegir Serie", series)

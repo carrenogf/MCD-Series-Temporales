@@ -23,6 +23,17 @@ columnas = list(df.columns)
 series = [serie for serie in columnas if serie not in ["VALOR_UVA", "TC_MINORISTA"]]
 columns0 = st.columns(5)
 
+# Selección de rango de fechas
+st.sidebar.subheader("Filtrar por Fechas")
+fecha_min = df.index.min().date()
+fecha_max = df.index.max().date()
+
+fecha_desde = st.sidebar.date_input("Fecha Desde", value=fecha_min, min_value=fecha_min, max_value=fecha_max)
+fecha_hasta = st.sidebar.date_input("Fecha Hasta", value=fecha_max, min_value=fecha_min, max_value=fecha_max)
+
+# Aplicar el filtro de fechas
+df = df.loc[fecha_desde:fecha_hasta]
+
 
 # funciones
 @st.dialog("Guardar columna nueva")
@@ -119,6 +130,8 @@ if option:
         
         with columns2[0]:
             period_default  = int(df["Year"].value_counts().mean())
+            if period_default > int(len(df)/2):
+                period_default = int(len(df)/2)
             periodos = st.number_input("Periodos", min_value=1, max_value=int(len(df)/2), value=period_default)
             model = st.selectbox("Modelo", ["additive", "multiplicative"])
             
