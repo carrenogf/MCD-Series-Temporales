@@ -8,6 +8,8 @@ import statsmodels.tsa.stattools as tsa
 from statsmodels.tsa.stattools import adfuller
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
+from pmdarima.arima import auto_arima, ndiffs, nsdiffs, ADFTest
+import numpy as np
 
 def display_col3(html1, html2, html3):
   
@@ -37,26 +39,6 @@ def graficar_serie(serie, titulo="", xlabel="Tiempo", ylabel="Tasa", ax=None):
     ax.legend(loc='best')
     ax.grid(True, color='0.6', dashes=(5, 2, 1, 2))
     
-    
-
-# def graficar_boxplots(serie, titulo):  
-#     # Convertir el índice en una columna si aún no lo has hecho
-#     post_pandemia_copy = serie.copy()
-#     post_pandemia_copy = post_pandemia_copy.reset_index()  # Convertir el índice en una columna llamada 'index'
-
-#     # Asegurarse de que 'FECHA' sea de tipo datetime
-#     post_pandemia_copy['FECHA'] = pd.to_datetime(post_pandemia_copy['FECHA'])
-
-#     # Extraer el año de la columna 'FECHA'
-#     post_pandemia_copy['año'] = post_pandemia_copy['FECHA'].dt.year  # Usar .dt.year para obtener el año
-
-#     # Crear el boxplot por año
-#     fig = px.box(post_pandemia_copy, x='año', y=f'{titulo}', title=f'Boxplot de {titulo}', color='año')
-
-#     # Mostrar el gráfico
-#     fig.show()
-
-
 def boxplots(serie, titulo):
     post_pandemia_copy = serie.copy().reset_index()
     post_pandemia_copy['FECHA'] = pd.to_datetime(post_pandemia_copy['FECHA'])
@@ -77,13 +59,6 @@ def graficar_boxplots(series, titulos):
     fig.update_layout(height=400, width=1200, title_text="Boxplots Comparativos", showlegend=False)
     fig.show()
 
-
-# def componentes(timeserie, periodo):
-#   decomposition = seasonal_decompose(timeserie, model='additive', period=periodo)
-#   fig = plt.figure()
-#   fig = decomposition.plot()
-#   fig.set_size_inches(15, 8)
-#   return fig
 def plotseasonal(res, axes, col):
     res.observed.plot(ax=axes[0, col], legend=False)
     res.trend.plot(ax=axes[1, col], legend=False)
@@ -119,7 +94,7 @@ def componentes(series, periodos, titulos):
   
 ## Función para dibujar juntos FAS: autocovarianzas; FAC y FACP, autocorrelación y autocorrelación parcial
 def autocov_autocorr(serie_r, nrol=75,serie_titulo=""):
-    fig, axes = plt.subplots(3, 1, figsize=(18, 10))
+    fig, axes = plt.subplots(3, 1, figsize=(5, 5),dpi = 70)
 
     plot_acf(serie_r, lags=nrol, ax=axes[0], color='blue', vlines_kwargs={"colors": 'blue'})
     axes[0].set_title(f'ACF (Autocorrelación) {serie_titulo}', fontsize=14)
@@ -204,3 +179,72 @@ def Augmented_Dickey_Fuller_Test_func2(series):
         'Estacionaria 5%': dftest[1] <= 0.05   
     }
   return pd.DataFrame(resultados).T
+
+
+
+def estacionario(y, name):
+  print(name)
+  # Estimado de número de diferencias con ADF test:Dickey-Fuller
+  n_adf = ndiffs(y, test='adf')  # -> 0
+
+  # KPSS test (auto_arima default): Kwiatkowski-Phillips-Schmidt-Shin
+  n_kpss = ndiffs(y, test='kpss')  # -> 0
+
+  # PP test: Phillips-Perron
+  n_pp = ndiffs(y, test='pp')  # -> 0
+
+  print('Estimado de número de diferencias con ADF test')
+  print(n_adf)
+
+  print('Estimado de número de diferencias con KPSS test')
+  print(n_kpss)
+
+  print('Estimado de número de diferencias con PP test')
+  print(n_pp)
+
+  print('Se debe realizar diferenciación (should_diff) ADF Test')
+  adftest = ADFTest(alpha=0.05)
+  print(adftest.should_diff(y))
+  print("---------------------------------------------------------------------")
+  
+  
+def estacionario2(series):
+  result = {}
+  for serie in series:
+    n_adf = ndiffs(serie, test='adf')
+    n_kpss = ndiffs(serie, test='kpss')
+    n_pp = ndiffs(serie, test='pp')
+    adftest = ADFTest(alpha=0.05)
+    should_diff = adftest.should_diff(serie)
+    result[serie.name] = {
+        'ADF': n_adf,
+        'KPSS': n_kpss,
+        'PP': n_pp,
+        'Should Diff ADFtest': should_diff
+    }
+  return pd.DataFrame(result).T
+
+
+def test_stationarity(series):
+    fig, axes = plt.subplots(ncols=len(series), nrows=1, figsize=(20, 5))
+    i = 0
+    for serie in series:
+        # Determing rolling statistics
+        rolmean = serie.rolling(25).mean()
+        rolstd = serie.rolling(25).std()
+
+        # Plot rolling statistics:
+        
+        ax = axes[i]
+        ax.plot(serie, color='#75a2e0', label='Original')
+        ax.plot(rolmean, color='#d12642', label='Media Móvil 25 periodos')
+        ax.plot(rolstd, color='#111163', label='Desvio Estandar Movil 25 periodos')
+        # Plot linear trend of rolling mean
+        z = np.polyfit(range(len(rolmean.dropna())), rolmean.dropna(), 1)
+        p = np.poly1d(z)
+        ax.plot(rolmean.index, p(range(len(rolmean))), color='green', linestyle='--', label='Tendencia Media Móvil')
+        ax.legend(loc='best')
+        ax.set_title(f'{serie.name} \n Media Móvil & Desvio Estandar Movil')
+        i += 1
+    fig.show()
+        
