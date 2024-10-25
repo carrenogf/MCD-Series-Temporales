@@ -10,6 +10,7 @@ from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 from pmdarima.arima import auto_arima, ndiffs, nsdiffs, ADFTest
 import numpy as np
+import statsmodels.api as sm
 
 def display_col3(html1, html2, html3):
   
@@ -91,7 +92,35 @@ def componentes(series, periodos, titulos):
     plt.show()
 
 
-  
+
+def multi_autocov_autocorr(dataframes, nrol=75, titulos=None):
+  # Supongamos que tu arreglo de DataFrames se llama `dataframes`
+  fig, axes = plt.subplots(nrows=len(dataframes), ncols=3, figsize=(18, 12))
+
+  for i, df in enumerate(dataframes):
+      # Extraemos la serie de valores
+      serie = df
+      
+      
+      # Gráfico de ACF
+      sm.graphics.tsa.plot_acf(serie, lags=nrol,  ax=axes[i, 0], title=f"ACF - {df.name}")
+      
+      
+      # Gráfico de PACF
+      sm.graphics.tsa.plot_pacf(serie, ax=axes[i, 1], title=f"PACF - {df.name}")
+      
+      # Gráfico de Autocovarianza
+      autocovarianza = tsa.acovf(serie, fft=False, nlag=nrol)
+      axes[i, 2].plot(autocovarianza, marker='o', linestyle='--')
+      axes[i, 2].set_title(f"Autocovarianza - {df.name}")
+      axes[i, 2].set_xlabel("Lags")
+      axes[i, 2].set_ylabel("Autocovarianza")
+
+  # Ajustar el layout y la ubicación de las leyendas
+  plt.tight_layout()
+  plt.show()
+
+
 ## Función para dibujar juntos FAS: autocovarianzas; FAC y FACP, autocorrelación y autocorrelación parcial
 def autocov_autocorr(serie_r, nrol=75,serie_titulo=""):
     fig, axes = plt.subplots(3, 1, figsize=(5, 5),dpi = 70)
