@@ -113,7 +113,11 @@ def multi_autocov_autocorr(dataframes, nrol=75, titulos=None):
       autocovarianza = tsa.acovf(serie, fft=False, nlag=nrol)
       axes[i, 2].plot(autocovarianza, marker='o', linestyle='--')
       axes[i, 2].set_title(f"Autocovarianza - {df.name}")
+      
+      axes[i, 0].set_xlabel("Lags")
+      axes[i, 1].set_xlabel("Lags")
       axes[i, 2].set_xlabel("Lags")
+      
       axes[i, 2].set_ylabel("Autocovarianza")
 
   # Ajustar el layout y la ubicación de las leyendas
