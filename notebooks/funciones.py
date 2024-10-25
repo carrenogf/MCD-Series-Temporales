@@ -107,7 +107,7 @@ def multi_autocov_autocorr(dataframes, nrol=75, titulos=None):
       
       
       # Gráfico de PACF
-      sm.graphics.tsa.plot_pacf(serie, ax=axes[i, 1], title=f"PACF - {df.name}")
+      sm.graphics.tsa.plot_pacf(serie, lags=nrol, ax=axes[i, 1], title=f"PACF - {df.name}")
       
       # Gráfico de Autocovarianza
       autocovarianza = tsa.acovf(serie, fft=False, nlag=nrol)
