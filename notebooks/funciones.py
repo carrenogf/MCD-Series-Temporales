@@ -11,7 +11,7 @@ import plotly.graph_objects as go
 from pmdarima.arima import auto_arima, ndiffs, nsdiffs, ADFTest
 import numpy as np
 import statsmodels.api as sm
-
+import seaborn as sns
 def display_col3(html1, html2, html3):
   
   html_str = """
@@ -280,4 +280,32 @@ def test_stationarity(series):
         ax.set_title(f'{serie.name} \n Media Móvil & Desvio Estandar Movil')
         i += 1
     fig.show()
-        
+
+def plot_train_test_predictions(dataframes_train, dataframes_test, predictions_test, series_names, start_date=None):
+  
+    num_series = len(dataframes_train)
+    fig, axes = plt.subplots(1, num_series, figsize=(20, 6), sharey=True)
+    sns.set(style="whitegrid")
+
+    for i in range(num_series):
+        ax = axes[i]
+
+        # Filtrar datos desde la fecha indicada (si se especifica)
+        train = dataframes_train[i][start_date:] if start_date else dataframes_train[i]
+        test = dataframes_test[i][start_date:] if start_date else dataframes_test[i]
+        pred = predictions_test[i][start_date:] if start_date else predictions_test[i]
+
+        # Graficar series
+        sns.lineplot(data=train, label='Train', ax=ax, color='#3477eb')
+        sns.lineplot(data=test, label='Test', ax=ax, color='green')
+        sns.lineplot(data=pred, label='Pred Test', ax=ax, color='red', linestyle='--')
+
+        # Configuración del gráfico
+        ax.set_title(series_names[i], fontsize=14)
+        ax.set_xlabel('Fecha')
+        ax.set_ylabel('Valor')
+        ax.legend(loc='best')
+        ax.grid(True)
+
+    plt.tight_layout()
+    plt.show()
