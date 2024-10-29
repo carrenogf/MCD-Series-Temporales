@@ -4,3 +4,24 @@
       suppress_warnings=True), 'titulo': 'sarima_train_df1_diff1', 'aic': 19849.715202833908, 'order': (5, 0, 2)}
 {'modelo': ARIMA(order=(4, 0, 2), scoring_args={}, seasonal_order=(0, 0, 1, 6),
       suppress_warnings=True, with_intercept=False), 'titulo': 'sarima_train_df2_diff1', 'aic': 6285.623605818426, 'order': (4, 0, 2)}
+{'modelo': ARIMA(order=(3, 0, 0), scoring_args={}, suppress_warnings=True), 'titulo': 'aa_train_df0', 'aic': 20220.972821628584, 'order': (3, 0, 0)}
+{'modelo': ARIMA(order=(2, 0, 2), scoring_args={}, suppress_warnings=True), 'titulo': 'aa_train_df1', 'aic': 19872.18986180873, 'order': (2, 0, 2)}
+{'modelo': ARIMA(order=(4, 0, 0), scoring_args={}, suppress_warnings=True), 'titulo': 'aa_train_df2', 'aic': 6278.465438859845, 'order': (4, 0, 0)}
+{'modelo': <statsmodels.tsa.holtwinters.results.HoltWintersResultsWrapper object at 0x000001FE1E779250>, 'titulo': 'expsmoth_train_df0', 'aic': 18642.983878722513, 'order': ''}
+{'modelo': <statsmodels.tsa.holtwinters.results.HoltWintersResultsWrapper object at 0x000001FE37ECD2B0>, 'titulo': 'expsmoth_train_df1', 'aic': 18191.285879662082, 'order': ''}
+{'modelo': <statsmodels.tsa.holtwinters.results.HoltWintersResultsWrapper object at 0x000001FE1E5EA600>, 'titulo': 'expsmoth_train_df2', 'aic': 5854.845355619032, 'order': ''}
+{'modelo': <statsmodels.tsa.holtwinters.results.HoltWintersResultsWrapper object at 0x000001FE1E5EB980>, 'titulo': 'simpsmoth_train_df0', 'aic': 18569.575874669954, 'order': ''}
+{'modelo': <statsmodels.tsa.holtwinters.results.HoltWintersResultsWrapper object at 0x000001FE391E4DA0>, 'titulo': 'simpsmoth_train_df1', 'aic': 18123.60475494942, 'order': ''}
+{'modelo': <statsmodels.tsa.holtwinters.results.HoltWintersResultsWrapper object at 0x000001FE38AA3260>, 'titulo': 'simpsmoth_train_df2', 'aic': 5807.996542921493, 'order': ''}
+{'modelo': ARIMA(order=(3, 0, 0), scoring_args={}, seasonal_order=(0, 0, 2, 21),
+      suppress_warnings=True), 'titulo': 'sarima_train_df0', 'aic': 20190.162048602782, 'order': (3, 0, 0)}
+{'modelo': ARIMA(order=(0, 0, 3), scoring_args={}, seasonal_order=(0, 0, 2, 21),
+      suppress_warnings=True), 'titulo': 'sarima_train_df1', 'aic': 19858.836381131212, 'order': (0, 0, 3)}
+{'modelo': ARIMA(order=(0, 0, 2), scoring_args={}, seasonal_order=(1, 0, 1, 6),
+      suppress_warnings=True), 'titulo': 'sarima_train_df2', 'aic': 6279.562399176739, 'order': (0, 0, 2)}
+{'modelo': <statsmodels.tsa.statespace.sarimax.SARIMAXResultsWrapper object at 0x000001FE395CCBF0>, 'titulo': 'sarimax_train_df0', 'aic': 20327.62189760639, 'order': {'trend': 0, 'exog': 2, 'ar': 3, 'ma': 0, 'seasonal_ar': 0, 'seasonal_ma': 42, 'reduced_ar': 3, 'reduced_ma': 42, 'exog_variance': 0, 'measurement_variance': 0, 'variance': 1}}
+{'modelo': <statsmodels.tsa.statespace.sarimax.SARIMAXResultsWrapper object at 0x000001FE1E69B0E0>, 'titulo': 'sarimax_train_df1', 'aic': 20001.449447186187, 'order': {'trend': 0, 'exog': 2, 'ar': 0, 'ma': 3, 'seasonal_ar': 0, 'seasonal_ma': 42, 'reduced_ar': 0, 'reduced_ma': 45, 'exog_variance': 0, 'measurement_variance': 0, 'variance': 1}}
+{'modelo': <statsmodels.tsa.statespace.sarimax.SARIMAXResultsWrapper object at 0x000001FE37975580>, 'titulo': 'sarimax_train_df2', 'aic': 6308.6009326834455, 'order': {'trend': 0, 'exog': 2, 'ar': 0, 'ma': 2, 'seasonal_ar': 6, 'seasonal_ma': 6, 'reduced_ar': 6, 'reduced_ma': 8, 'exog_variance': 0, 'measurement_variance': 0, 'variance': 1}}
+{'modelo': <statsmodels.tsa.holtwinters.results.HoltWintersResultsWrapper object at 0x000001FE19BF9E20>, 'titulo': 'expsmoth_train_df0_diff1', 'aic': 18639.064100096137, 'order': ''}
+{'modelo': <statsmodels.tsa.holtwinters.results.HoltWintersResultsWrapper object at 0x000001FE1F7F70E0>, 'titulo': 'expsmoth_train_df1_diff1', 'aic': 18436.939884242296, 'order': ''}
+{'modelo': <statsmodels.tsa.holtwinters.results.HoltWintersResultsWrapper object at 0x000001FE1F7F79E0>, 'titulo': 'expsmoth_train_df2_diff1', 'aic': 5996.045189626212, 'order': ''}
