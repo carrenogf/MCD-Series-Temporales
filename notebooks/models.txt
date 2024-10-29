@@ -1,0 +1,6 @@
+{'modelo': ARIMA(order=(3, 0, 2), scoring_args={}, seasonal_order=(1, 0, 2, 21),
+      suppress_warnings=True), 'titulo': 'sarima_train_df0_diff1', 'aic': 20188.5360258479, 'order': (3, 0, 2)}
+{'modelo': ARIMA(order=(5, 0, 2), scoring_args={}, seasonal_order=(0, 0, 2, 21),
+      suppress_warnings=True), 'titulo': 'sarima_train_df1_diff1', 'aic': 19849.715202833908, 'order': (5, 0, 2)}
+{'modelo': ARIMA(order=(4, 0, 2), scoring_args={}, seasonal_order=(0, 0, 1, 6),
+      suppress_warnings=True, with_intercept=False), 'titulo': 'sarima_train_df2_diff1', 'aic': 6285.623605818426, 'order': (4, 0, 2)}
