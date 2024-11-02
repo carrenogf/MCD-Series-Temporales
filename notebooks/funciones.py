@@ -92,6 +92,46 @@ def componentes(series, periodos, titulos):
     plt.show()
 
 
+def plot_componentes(serie, periodo, titulo):
+    # Descomponer la serie en componentes estacionales, de tendencia y residuales
+    res = seasonal_decompose(serie, model='additive', period=periodo)
+
+    # Crear subplots
+    fig, axes = plt.subplots(nrows=4, ncols=1, figsize=(10, 10))
+    fig.suptitle(f"Decomposición {titulo}", fontsize=14)
+
+    # Nombres de los componentes
+    component_names = ['Observed', 'Trend', 'Seasonal', 'Residual']
+
+    # Graficar cada componente
+    res.observed.plot(ax=axes[0], legend=False)
+    axes[0].set_ylabel(component_names[0], fontsize=10)
+
+    res.trend.plot(ax=axes[1], legend=False)
+    axes[1].set_ylabel(component_names[1], fontsize=10)
+
+    res.seasonal.plot(ax=axes[2], legend=False)
+    axes[2].set_ylabel(component_names[2], fontsize=10)
+
+    res.resid.plot(ax=axes[3], legend=False)
+    axes[3].set_ylabel(component_names[3], fontsize=10)
+
+    # Añadir líneas verticales en cada cambio de año
+    # Identificar el índice de cada nuevo año
+    if isinstance(serie.index, pd.DatetimeIndex):  # Asegurarse de que la serie tenga un índice de fechas
+        years = serie.index.to_series().dt.year
+        year_changes = years[years.diff() == 1].index  # Encontrar inicios de año
+
+        for ax in axes:
+            for date in year_changes:
+                ax.axvline(date, color='black', linestyle='--', linewidth=2)
+
+    # Rotar los ticks en el eje x para la última gráfica
+    axes[3].tick_params(axis='x', rotation=45)
+
+    # Ajustar espacio entre subplots
+    plt.tight_layout(rect=[0, 0, 1, 0.96])
+    plt.show()
 
 def multi_autocov_autocorr(dataframes, nrol=75, titulos=None):
   # Supongamos que tu arreglo de DataFrames se llama `dataframes`
