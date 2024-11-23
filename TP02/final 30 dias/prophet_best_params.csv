@@ -1,0 +1,4 @@
+df,best_params
+CHU_COPA_AJUST,"{'changepoint_prior_scale': 0.1, 'seasonality_prior_scale': 0.01, 'daily_seasonality': True, 'yearly_seasonality': True, 'holidays_prior_scale': 0.01, 'seasonality_mode': 'additive', 'changepoint_range': 0.8}"
+CHU_REC_PROPIOS_AJUST,"{'changepoint_prior_scale': 0.001, 'seasonality_prior_scale': 10.0, 'daily_seasonality': True, 'yearly_seasonality': True, 'holidays_prior_scale': 0.01, 'seasonality_mode': 'additive', 'changepoint_range': 0.9}"
+CHU_REGALIAS_AJUST,"{'changepoint_prior_scale': 0.5, 'seasonality_prior_scale': 0.1, 'daily_seasonality': True, 'yearly_seasonality': False, 'holidays_prior_scale': 0.01, 'seasonality_mode': 'multiplicative', 'changepoint_range': 0.8}"
