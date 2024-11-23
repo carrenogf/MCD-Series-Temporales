@@ -1,4 +1,0 @@
-df;best_params
-CHU_COPA_AJUST;{'n_estimators': 453, 'learning_rate': 0.052251207169970344, 'max_depth': 3, 'min_child_weight': 2, 'subsample': 0.9052659212939362, 'colsample_bytree': 0.9700609066338445, 'gamma': 0.4972981188401708, 'reg_alpha': 0.49902287558195313, 'reg_lambda': 1.390212005740913}
-CHU_REC_PROPIOS_AJUST;{'n_estimators': 370, 'learning_rate': 0.07063010235445233, 'max_depth': 7, 'min_child_weight': 4, 'subsample': 0.6846124207200684, 'colsample_bytree': 0.7520959246442501, 'gamma': 0.34727747835872463, 'reg_alpha': 0.10152547979284736, 'reg_lambda': 1.4618068656153174}
-CHU_REGALIAS_AJUST;{'n_estimators': 500, 'learning_rate': 0.09909913615269426, 'max_depth': 7, 'min_child_weight': 2, 'subsample': 0.708172616764662, 'colsample_bytree': 0.9508794978508508, 'gamma': 0.49887376061225946, 'reg_alpha': 0.26891921056341245, 'reg_lambda': 0.5637625884315804}
