@@ -5,3 +5,10 @@ El código final del TP02 esta en las siguientes carpetas:
 * TEST 90
 * ./TP02/ligthgbm.ipynb: contiene el 5fcv y optuna
 * ./TP02/xgboost.ipynb: contiene el 5fcv y optuna
+
+
+Alumnos:
+- Cablinski Pablo
+- Carreño Francisco
+- Griffiths Waldo
+- Parra Iván
